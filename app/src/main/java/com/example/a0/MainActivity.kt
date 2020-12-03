@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+
+
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var button1 : Button
@@ -28,6 +30,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        init()
+
     }
     private fun init() {
 
@@ -40,6 +45,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         button7 = findViewById(R.id.button7)
         button8 = findViewById(R.id.button8)
         button9 = findViewById(R.id.button9)
+        restartbutton = findViewById(R.id.restartbutton)
 
         button1.setOnClickListener(this)
         button2.setOnClickListener(this)
@@ -50,6 +56,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         button7.setOnClickListener(this)
         button8.setOnClickListener(this)
         button9.setOnClickListener(this)
+        restartbutton.setOnClickListener{
+            button1.text = ""
+            button2.text = ""
+            button3.text = ""
+            button4.text = ""
+            button5.text = ""
+            button6.text = ""
+            button7.text = ""
+            button8.text = ""
+            button9.text = ""
+            disableButtons(true)
+            firstPlayer.clear()
+            secondPlayer.clear()
+        }
+
     }
 
     override fun onClick(clickedView: View?) {
@@ -80,12 +101,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun playGame(buttonNumber: Int, clickedView: Button) {
         if (activePlayer == 1) {
             clickedView.text = "X"
-            clickedView.setBackgroundColor(Color.RED)
             firstPlayer.add(buttonNumber)
             activePlayer = 2
         } else {
             clickedView.text = "0"
-            clickedView.setBackgroundColor(Color.GREEN)
             secondPlayer.add(buttonNumber)
             activePlayer = 1
         }
@@ -153,15 +172,32 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             winnerPlayer = 2
         }
 
-        if(winnerPlayer!= 0) {
+
             if(winnerPlayer == 1) {
                 Toast.makeText(this,"X wins!",Toast.LENGTH_LONG).show()
-            } else {
+                disableButtons(false)
+            } else if (winnerPlayer == 2) {
                 Toast.makeText(this,"O wins!",Toast.LENGTH_LONG).show()
+                disableButtons(false)
+            } else if (button1.text.isNotEmpty() && button2.text.isNotEmpty()  && button3.text.isNotEmpty()  && button4.text.isNotEmpty()  && button5.text.isNotEmpty()  && button6.text.isNotEmpty()  && button7.text.isNotEmpty()  && button8.text.isNotEmpty()  && button9.text.isNotEmpty()) {
+                Toast.makeText(this,"Tie!",Toast.LENGTH_LONG).show()
+                disableButtons(false)
             }
 
-        }
 
+
+    }
+
+    private fun disableButtons(value: Boolean) {
+        button1.isEnabled = value
+        button2.isEnabled = value
+        button3.isEnabled = value
+        button4.isEnabled = value
+        button5.isEnabled = value
+        button6.isEnabled = value
+        button7.isEnabled = value
+        button8.isEnabled = value
+        button9.isEnabled = value
     }
 
 
